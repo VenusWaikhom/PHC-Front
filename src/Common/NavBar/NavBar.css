@@ -1,0 +1,13 @@
+.NavBar {
+  background-color: #1f3f37;
+  color: white;
+  border-bottom: #6c757d;
+}
+
+.NavItem {
+  transition: all 0.5s ease-in-out;
+}
+
+.NavItem:hover {
+  color: #f7a582;
+}
