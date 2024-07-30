@@ -73,8 +73,8 @@
 }
 
 .Radio {
-  height: 1.5rem;
-  width: 1.5rem;
+  height: 1.3rem;
+  width: 1.3rem;
   border: 1px solid black;
   border-radius: 50%;
   display: flex;
@@ -83,8 +83,8 @@
 }
 
 .Active {
-  height: 1.1rem;
-  width: 1.1rem;
+  height: 1rem;
+  width: 1rem;
   background-color: black;
   border-radius: 50%;
 }

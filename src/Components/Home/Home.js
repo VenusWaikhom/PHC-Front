@@ -3,9 +3,9 @@ import NavBar from "../../Common/NavBar/NavBar";
 import { styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { RiEyeLine } from "react-icons/ri";
 import "./Home.css";
-// import Delete from "../Delete/Delete";
+import Delete from "../Delete/Delete";
+import Edit from "../Edit/Edit";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -99,40 +99,40 @@ const Home = () => {
               Actions Buttons
             </div>
           </div>
-          <div className="TableBodyWrapper flex flex-wrap flex-col gap-0">
-            {filteredData.map((item, index) => {
-              const formattedDate = new Date(item?.DOB)
-                .toISOString()
-                .split("T")[0];
-              return (
-                <div key={index} className="TableBody flex">
-                  <div className="flex justify-center items-center">
-                    {item?.Name}
-                  </div>
-                  <div className="flex justify-center items-center">
-                    {item?.FatherName}
-                  </div>
-                  <div className="flex justify-center items-center">
-                    {item?.Address}
-                  </div>
-                  <div className="flex justify-center items-center">
-                    {item?.PhoneNumber}
-                  </div>
-                  <div className="flex justify-center items-center">
-                    {item?.BirthRegNo}
-                  </div>
-                  <div className="flex justify-center items-center">
-                    {formattedDate}
-                  </div>
-                  <div className="flex justify-center items-center gap-3 text-xl">
-                    <div className="cursor-pointer">
-                      <RiEyeLine />
+          <div className="TableBodyMainWrapper">
+            <div className="TableBodyWrapper flex flex-wrap flex-col gap-0">
+              {filteredData.map((item, index) => {
+                const formattedDate = new Date(item?.DOB)
+                  .toISOString()
+                  .split("T")[0];
+                return (
+                  <div key={index} className="TableBody flex">
+                    <div className="flex justify-center items-center">
+                      {item?.Name}
                     </div>
-                    {/* <Delete item={item} /> */}
+                    <div className="flex justify-center items-center">
+                      {item?.FatherName}
+                    </div>
+                    <div className="flex justify-center items-center">
+                      {item?.Address}
+                    </div>
+                    <div className="flex justify-center items-center">
+                      {item?.PhoneNumber}
+                    </div>
+                    <div className="flex justify-center items-center">
+                      {item?.BirthRegNo}
+                    </div>
+                    <div className="flex justify-center items-center">
+                      {formattedDate}
+                    </div>
+                    <div className="flex justify-center items-center gap-5 text-2xl">
+                      <Edit item={item} />
+                      <Delete item={item} />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

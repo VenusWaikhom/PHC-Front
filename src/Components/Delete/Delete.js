@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import Modal from "@mui/material/Modal";
+import { AiOutlineDelete } from "react-icons/ai";
 import Box from "@mui/material/Box";
-import { RiDeleteBin7Line } from "react-icons/ri";
-import Fade from "@mui/material/Fade";
-import Backdrop from "@mui/material/Backdrop";
+import Modal from "@mui/material/Modal";
+import { GobalStorage } from "../../Context/GobalStorage";
 
 const style = {
   position: "absolute",
@@ -24,60 +23,86 @@ const style = {
   p: 4,
 };
 
-function Delete(props) {
-  const [OpenDelete, SetOpenDelete] = useState(false);
-  const OpenDeleteModal = () => {
-    SetOpenDelete(true);
-  };
-  const CloseDeleteModal = () => {
-    SetOpenDelete(false);
-  };
-
-  console.log(OpenDelete);
+function Delete(item) {
+  const { state } = GobalStorage();
+  const [openDelete, setOpenDelete] = useState(false);
+  const handleOpenDelete = () => setOpenDelete(true);
+  const handleCloseDelete = () => setOpenDelete(false);
 
   return (
-    <div className="text-red-600 cursor-pointer" onClick={OpenDeleteModal}>
-      <RiDeleteBin7Line />
-
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        onClose={CloseDeleteModal}
-        open={OpenDelete}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
+    <div>
+      <div
+        className="cursor-pointer text-red-700"
+        onClick={() => {
+          handleOpenDelete();
         }}
       >
-        <Fade in={OpenDelete}>
-          <Box sx={style}>
-            <div className="Header flex content-end justify-between p-10 min-w-full justify-self-start">
-              <div></div>
+        <AiOutlineDelete />
+      </div>
+
+      <Modal
+        open={openDelete}
+        onClose={handleCloseDelete}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className="Header flex content-end justify-between p-10 min-w-full justify-self-start ">
+            <div></div>
+            <div
+              className="text-4xl cursor-pointer select-none"
+              onClick={handleCloseDelete}
+            >
+              X
+            </div>
+          </div>
+          <div className="flex flex-wrap content-center justify-center flex-col gap-4">
+            <div className="flex flex-wrap content-center justify-center">
+              <img
+                src="/Images/Warning.png"
+                alt="Warning"
+                className="WarningImage"
+              />
+            </div>
+            <div className="flex flex-wrap content-center justify-center flex-col uppercase tracking-wide text-2xl font-semibold">
+              Confirm Delete
+            </div>
+            <div className="flex flex-wrap content-center justify-center uppercase gap-8">
               <div
-                className="text-4xl cursor-pointer select-none"
-                onClick={CloseDeleteModal}
+                className="DeleteModalBtn Cancel flex flex-wrap content-center justify-center  text-xl font-semibold"
+                onClick={() => {
+                  setOpenDelete(false);
+                }}
               >
-                X
+                Cancel
+              </div>
+              <div
+                className="DeleteModalBtn Delete flex flex-wrap content-center justify-center  text-xl font-semibold"
+                onClick={() => {
+                  fetch(
+                    "https://phc-api.onrender.com/DeleteChildren/" +
+                      item?.item?._id,
+                    {
+                      method: "delete",
+                      headers: {
+                        Authorization: "Bearer " + state?.userToken,
+                      },
+                    }
+                  )
+                    .then((res) => {
+                      res.json();
+                    })
+                    .then((json) => {
+                      setOpenDelete(false);
+                      window.location.reload();
+                    });
+                }}
+              >
+                Delete
               </div>
             </div>
-            <div
-              onClick={() => {
-                fetch("https://phc-api.onrender.com/DeleteChildren", {
-                  method: "delete",
-                  headers: { Authorization: "Bearer" },
-                  body: JSON.stringify(props),
-                })
-                  .then((res) => res.json())
-                  .then((json) => {
-                    console.log(json.error);
-                  });
-              }}
-            ></div>
-          </Box>
-        </Fade>
+          </div>
+        </Box>
       </Modal>
     </div>
   );
