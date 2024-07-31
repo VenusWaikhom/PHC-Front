@@ -94,7 +94,7 @@ function Delete(item) {
                       res.json();
                     })
                     .then((json) => {
-                      toast.success(json.error);
+                      toast.success("Child Data delete successfull");
                       setOpenDelete(false);
                       window.location.reload();
                     });
