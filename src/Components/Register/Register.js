@@ -95,9 +95,7 @@ function Register() {
       })
         .then((res) => res.json())
         .then((json) => {
-          if (json.registor === "Registor successfull") {
-            toast.success(json.error);
-          } else toast(json.error);
+          toast.success(json.error);
         });
     }
   }
