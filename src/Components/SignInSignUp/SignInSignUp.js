@@ -122,33 +122,36 @@ const SignInSignUp = () => {
 
   const signIn = (e) => {
     e.preventDefault();
-
-    fetch("https://phc-api.onrender.com/Admin/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: logInEmail,
-        password: logInPassword,
-      }),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.admin && json.token) {
-          dispatch({
-            type: "login",
-            id: json.admin._id,
-            token: json.token,
-          });
-          toast.success(json.error);
-        } else {
-          toast.error(json.error);
-        }
+    if (!logInEmail || !logInPassword) {
+      toast.warn("Please fill the field");
+    } else {
+      fetch("https://phc-api.onrender.com/Admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: logInEmail,
+          password: logInPassword,
+        }),
       })
-      .catch((error) => {
-        toast.error(error);
-      });
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.admin && json.token) {
+            dispatch({
+              type: "login",
+              id: json.admin._id,
+              token: json.token,
+            });
+            toast.success(json.error);
+          } else {
+            toast.error(json.error);
+          }
+        })
+        .catch((error) => {
+          toast.error(error);
+        });
+    }
   };
 
   const signUp = () => {
