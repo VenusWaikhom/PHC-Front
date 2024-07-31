@@ -96,6 +96,19 @@ function Register() {
         .then((res) => res.json())
         .then((json) => {
           toast.success(json.error);
+          SetName();
+          SetAddress();
+          SetDistrict();
+          SetEmail();
+          SetFatherName();
+          SetMotherName();
+          SetPhoneNumber();
+          SetPCHTown();
+          SetGender();
+          SetRegNo();
+          SetBCC(false);
+          SetOPVO(false);
+          SetHEPB(false);
         });
     }
   }
