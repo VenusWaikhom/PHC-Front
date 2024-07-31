@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import { FaX } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa";
 import { GobalStorage } from "../../Context/GobalStorage";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -37,12 +38,12 @@ function ThreeHalf(item) {
 
   const [OpenThreeHalf, SetOpenThreeHalf] = useState(false);
   const handleOpenThreeHalf = () => {
-    SetOpenThreeHalf(true);
     fetch(
       "https://phc-api.onrender.com/GetThree_HalfData/" + item?.item?.item?._id
     )
       .then((res) => res.json())
       .then((json) => {
+        SetOpenThreeHalf(true);
         SetThreeHalfData(json);
       });
   };
@@ -254,9 +255,10 @@ function ThreeHalf(item) {
                       )
                         .then((res) => res.json())
                         .then((json) => {
+                          toast.success(json.error);
                           SetOpenThreeHalf(false);
                         })
-                        .catch((error) => console.error("Error:", error));
+                        .catch((error) => toast.error(error));
                     }}
                   >
                     <div className="DeleteModalBtn Delete flex content-center justify-center flex-wrap">

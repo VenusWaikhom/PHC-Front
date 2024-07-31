@@ -3,6 +3,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { GobalStorage } from "../../Context/GobalStorage";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -93,6 +94,7 @@ function Delete(item) {
                       res.json();
                     })
                     .then((json) => {
+                      toast.success(json.error);
                       setOpenDelete(false);
                       window.location.reload();
                     });

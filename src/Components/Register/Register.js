@@ -3,6 +3,7 @@ import NavBar from "../../Common/NavBar/NavBar";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import "./Register.css";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -68,7 +69,7 @@ function Register() {
       !OPVO ||
       !HEPB
     ) {
-      alert("Please Input all the fields");
+      toast.warn("Please Input all the fields");
     } else {
       fetch("https://phc-api.onrender.com/addChildren", {
         method: "POST",
@@ -94,8 +95,10 @@ function Register() {
       })
         .then((res) => res.json())
         .then((json) => {
-        })
-        
+          if (json.registor === "Registor successfull") {
+            toast.success(json.error);
+          } else toast(json.error);
+        });
     }
   }
 
@@ -271,8 +274,10 @@ function Register() {
               } else SetBCC(true);
             }}
           >
-            <div className="Radio ">
-              <div className={BCC ? "Active" : "Passive"}></div>
+            <div className="flex content-center flex-wrap">
+              <div className="Radio ">
+                <div className={BCC ? "Active" : "Passive"}></div>
+              </div>
             </div>
             <div className="Input_Label">BCC</div>
           </div>
@@ -284,8 +289,10 @@ function Register() {
               } else SetOPVO(true);
             }}
           >
-            <div className="Radio ">
-              <div className={OPVO ? "Active" : "Passive"}></div>
+            <div className="flex content-center flex-wrap">
+              <div className="Radio ">
+                <div className={OPVO ? "Active" : "Passive"}></div>
+              </div>
             </div>
             <div className="Input_Label">OPV-0</div>
           </div>
@@ -297,8 +304,10 @@ function Register() {
               } else SetHEPB(true);
             }}
           >
-            <div className="Radio ">
-              <div className={HEPB ? "Active" : "Passive"}></div>
+            <div className="flex content-center flex-wrap">
+              <div className="Radio ">
+                <div className={HEPB ? "Active" : "Passive"}></div>
+              </div>
             </div>
             <div className="Input_Label">HEP-B</div>
           </div>

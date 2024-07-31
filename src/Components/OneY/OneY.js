@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import { FaX } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa";
 import { GobalStorage } from "../../Context/GobalStorage";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -37,11 +38,11 @@ function OneY(item) {
 
   const [OpenOneY, SetOpenOneY] = useState(false);
   const handleOpenOneY = () => {
-    SetOpenOneY(true);
     fetch("https://phc-api.onrender.com/GetOneYData/" + item?.item?.item?._id)
       .then((res) => res.json())
       .then((json) => {
         SetOneYData(json);
+        SetOpenOneY(true);
       });
   };
   const handleCloseOneY = () => {
@@ -256,9 +257,10 @@ function OneY(item) {
                       )
                         .then((res) => res.json())
                         .then((json) => {
+                          toast.success(json.error);
                           SetOpenOneY(false);
                         })
-                        .catch((error) => console.error("Error:", error));
+                        .catch((error) => toast.error(error));
                     }}
                   >
                     <div className="DeleteModalBtn Delete flex content-center justify-center flex-wrap">

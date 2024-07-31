@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import { FaX } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa";
 import { GobalStorage } from "../../Context/GobalStorage";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -37,13 +38,13 @@ function OneHalf(item) {
 
   const [OpenOneHalf, SetOpenOneHalf] = useState(false);
   const handleOpenOneHalf = () => {
-    SetOpenOneHalf(true);
     fetch(
       "https://phc-api.onrender.com/GetOne_HalfData/" + item?.item?.item?._id
     )
       .then((res) => res.json())
       .then((json) => {
         SetOneHalfData(json);
+        SetOpenOneHalf(true);
       });
   };
 
@@ -255,9 +256,10 @@ function OneHalf(item) {
                       )
                         .then((res) => res.json())
                         .then((json) => {
+                          toast.success(json.error);
                           SetOpenOneHalf(false);
                         })
-                        .catch((error) => console.error("Error:", error));
+                        .catch((error) => toast.error(error));
                     }}
                   >
                     Update

@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import { FaX } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa";
 import { GobalStorage } from "../../Context/GobalStorage";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -35,11 +36,11 @@ function Nine(item) {
 
   const [OpenNine, SetOpenNine] = useState(false);
   const handleOpenNine = () => {
-    SetOpenNine(true);
     fetch("https://phc-api.onrender.com/GetNineData/" + item?.item?.item?._id)
       .then((res) => res.json())
       .then((json) => {
         SetNineData(json);
+        SetOpenNine(true);
       });
   };
   const handleCloseNine = () => {
@@ -223,9 +224,10 @@ function Nine(item) {
                       })
                         .then((res) => res.json())
                         .then((json) => {
+                          toast.success(json.error);
                           SetOpenNine(false);
                         })
-                        .catch((error) => console.error("Error:", error));
+                        .catch((error) => toast.error(error));
                     }}
                   >
                     Update

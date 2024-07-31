@@ -4,6 +4,7 @@ import ReactCardFlip from "react-card-flip";
 import { GobalStorage } from "../../Context/GobalStorage";
 import OtpInput from "react-otp-input";
 import "./SignInSIgnUp.css";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -61,31 +62,33 @@ const SignInSignUp = () => {
   };
 
   const handleOTPFieldOpen = () => {
-    if (!logInEmail) {
-      alert("Email Cannot be empty");
-    }
     if (OTPOpen === false) {
       SetChangePassword("");
       SetNewPassword("");
     }
-    fetch("https://phc-api.onrender.com/Admin/SendOTP", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: logInEmail,
-      }),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.success === false) {
-          alert(json.error);
-        } else {
-          alert("OTP Send Successful");
-          SetOTPOpen(true);
-        }
-      });
+    if (!logInEmail) {
+      toast.warn("Email Cannot be empty");
+    } else {
+      fetch("https://phc-api.onrender.com/Admin/SendOTP", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: logInEmail,
+        }),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          console.log(json);
+          if (json.success === false) {
+            toast.error(json.error);
+          } else {
+            toast.success("OTP Send Successful");
+            SetOTPOpen(true);
+          }
+        });
+    }
   };
 
   const handleChangePassword = () => {
@@ -112,7 +115,7 @@ const SignInSignUp = () => {
           SetOTPOpen(false);
           setOpenForgotPassword(false);
         } else {
-          alert(json?.error);
+          toast.error(json?.error);
         }
       });
   };
@@ -121,7 +124,6 @@ const SignInSignUp = () => {
     e.preventDefault();
 
     fetch("https://phc-api.onrender.com/Admin/login", {
-      timeout: 5,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -133,34 +135,54 @@ const SignInSignUp = () => {
     })
       .then((res) => res.json())
       .then((json) => {
-        dispatch({
-          type: "login",
-          id: json.admin?._id,
-          token: json?.token,
-        });
+        if (json.admin && json.token) {
+          dispatch({
+            type: "login",
+            id: json.admin._id,
+            token: json.token,
+          });
+          toast.success(json.error);
+        } else {
+          toast.error(json.error);
+        }
+      })
+      .catch((error) => {
+        toast.error(error);
       });
   };
 
   const signUp = () => {
-    fetch("https://phc-api.onrender.com/Admin/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: signUpEmail,
-        name: signUpName,
-        password: signUpPassword,
-      }),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        dispatch({
-          type: "login",
-          id: json.admin?._id,
-          token: json?.token,
+    if (!signUpEmail || !signUpName || !signUpPassword) {
+      toast.warn("Please input all the field");
+    } else {
+      fetch("https://phc-api.onrender.com/Admin/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: signUpEmail,
+          name: signUpName,
+          password: signUpPassword,
+        }),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.admin && json.token) {
+            dispatch({
+              type: "login",
+              id: json.admin._id,
+              token: json.token,
+            });
+            toast.success("Sign-up successful!");
+          } else {
+            toast.error(json.error);
+          }
+        })
+        .catch((error) => {
+          toast.error("Error:", error);
         });
-      });
+    }
   };
 
   return (

@@ -1,6 +1,11 @@
 .HomeWrapper {
   height: 100vh;
   width: 100vw;
+  overflow: scroll;
+}
+
+.HomeWrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .HomeTableMainWrapper {

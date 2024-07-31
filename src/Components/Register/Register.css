@@ -1,16 +1,20 @@
 .Registor_Wrapper {
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow: scroll;
+}
+
+.Registor_Wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .Registration_Block_Wrapper {
-  height: 100%;
+  height: 70%;
   width: 100%;
 }
 
 .Registration_Primary {
-  height: 70%;
+  height: 100%;
   width: 95%;
   border: 1px solid black;
   display: flex;
