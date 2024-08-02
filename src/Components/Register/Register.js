@@ -10,8 +10,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "90%",
-  height: "90%",
+  width: "50%",
+  height: "60%",
   display: "flex",
   flexDirection: "column",
   justifyContent: "start",
@@ -268,7 +268,7 @@ function Register() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className="Header flex content-end justify-between p-10 min-w-full justify-self-start ">
+          <div className="Header flex content-end justify-between min-w-full justify-self-start ">
             <div></div>
             <div
               className="text-4xl cursor-pointer select-none"
